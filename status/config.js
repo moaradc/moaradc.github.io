@@ -16,11 +16,7 @@ window.Config = {
   ShowLink: true,
 
   // 导航栏菜单
-  Navi: [
-    {
-      text: 'Homepage',
-      url: 'https://status.org.cn/'
-    },
+  Navi: {
     {
       text: 'bilibili',
       url: 'https://b23.tv/zbuvkKr'
