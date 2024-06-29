@@ -18,8 +18,8 @@ window.Config = {
   // 导航栏菜单
   Navi: [
     {
-      text: 'bilibili',
-      url: 'https://b23.tv/zbuvkKr'
+      text: '回主页',
+      url: 'https://moaradc.github.io'
     },
   ],
 };
