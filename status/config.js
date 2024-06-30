@@ -10,7 +10,7 @@ window.Config = {
   ],
 
   // 日志天数
-  CountDays: 40,
+  CountDays: 50,
 
   // 是否显示检测站点的链接
   ShowLink: true,
