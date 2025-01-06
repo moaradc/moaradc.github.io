@@ -1,4 +1,5 @@
-<!-- 本页面由GPT-4o与DeepSeek共同制作 -->
+<!-- 本页面由GPT-4o与DeepSeek共同制作/2025-01-06 16:10:32 -->
+<!-- v1.1增加一键模拟 -->
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -147,22 +148,30 @@
     <h1>银河幸运星活动模拟</h1>
     <p>此页面用来模拟《崩坏：星穹铁道》的「银河幸运星活动」</p>
     <p>此页面仅供娱乐</p>
-    <p> 使用Math.random()生成伪随机数 </p>
+    <p> 使用Math.random()生成伪随机数 </p>
     <div class="button-section">
       <div class="button-row">
         <button class="button primary" id="simulate-7-days" onclick="simulateLottery()">参与抽奖7天</button>
-        <button class="button primary" onclick="simulateLotteryOnce()">参与抽奖1天</button>
+        <button class="button primary" id="simulate-once" onclick="simulateLotteryOnce()">参与抽奖1天</button>
       </div>
       <div class="button-row">
-        <button class="button secondary" onclick="simulateFixedRewardOnce()">领取固定奖励1天</button>
+        <button class="button secondary" id="fixed-reward" onclick="simulateFixedRewardOnce()">领取固定奖励1天</button>
         <button class="button reset" onclick="resetGame()">重置活动</button>
         <button class="button info" onclick="showInfo()">活动说明</button>
       </div>
+      <div class="button-row">
+        <button class="button primary" id="simulate-all" onclick="simulateUntilLuckyStar()">一键模拟</button>
+      </div>
     </div>
     <div class="result">
-      <p>参与抽奖：<span id="click-count">0</span> 次</p>
-      <p>总计抽奖：<span id="total-draws">0</span> 次</p>
-      <p>本次获得：<span id="total-reward">0</span> 星琼</p>
+      <div id="normal-stats">
+        <p>参与抽奖：<span id="click-count">0</span> 次</p>
+        <p>总计抽奖：<span id="total-draws">0</span> 次</p>
+        <p>本次获得：<span id="total-reward">0</span> 星琼</p>
+      </div>
+      <div id="simulate-stats" style="display: none;">
+        <p>总共进行了 <span id="total-cycles">0</span> 个七次抽奖的循环</p>
+      </div>
       <h2>活动结果</h2>
       <ul id="results"></ul>
       <p id="warning" class="message" style="display: none;">您已抽中幸运巨星奖励，无法再次参与抽奖！请点击「重置活动」重新开始</p>
@@ -240,8 +249,12 @@
     let clickCount = 0; // 记录本次活动的抽奖按钮点击次数
     let totalDraws = 0; // 记录总计抽奖次数，不可重置
 
-    // 获取“参与抽奖7天”按钮
+    // 获取按钮元素
     const simulate7DaysButton = document.getElementById('simulate-7-days');
+    const simulateOnceButton = document.getElementById('simulate-once');
+    const fixedRewardButton = document.getElementById('fixed-reward');
+    const simulateAllButton = document.getElementById('simulate-all');
+
     // 创建遮罩层
     const disabledOverlay = document.createElement('div');
     disabledOverlay.className = 'disabled-overlay';
@@ -249,6 +262,12 @@
 
     // 将遮罩层添加到“参与抽奖7天”按钮中
     simulate7DaysButton.appendChild(disabledOverlay);
+
+    // 禁用一组按钮，启用另一组按钮
+    function toggleButtons(disableGroup, enableGroup) {
+      disableGroup.forEach(button => button.disabled = true);
+      enableGroup.forEach(button => button.disabled = false);
+    }
 
     function simulateLottery() {
       if (hasWonLuckyStar) {
@@ -283,62 +302,105 @@
 
       totalDraws += 7;
       showResults();
+
+      // 禁用“一键模拟”按钮
+      toggleButtons([simulateAllButton], [simulate7DaysButton, simulateOnceButton, fixedRewardButton]);
     }
 
-    function simulateLotteryOnce() {
-      if (hasWonLuckyStar) {
-        document.getElementById("warning").style.display = "block";
-        return;
+function simulateLotteryOnce() {
+  if (hasWonLuckyStar) {
+    document.getElementById("warning").style.display = "block";
+    return;
+  }
+
+  if (userChoices.length >= 7) {
+    showModal('maxAttemptsModal'); // 显示完成7次选择的提示模态框
+    return;
+  }
+
+  const isLuckyStar = !hasWonLuckyStar && Math.random() < luckyStarWinners[userChoices.length] / totalParticipants;
+  const isFirstPrize = Math.random() < 0.1;
+  let reward;
+
+  if (isLuckyStar) {
+    reward = 500000;
+    hasWonLuckyStar = true;
+    rewards.push(`幸运巨星 - ${reward}星琼`);
+  } else if (isFirstPrize) {
+    reward = 600;
+    rewards.push(`一等奖 - ${reward}星琼`);
+  } else {
+    reward = 50;
+    rewards.push(`二等奖 - ${reward}星琼`);
+  }
+
+  userChoices.push(rewards[rewards.length - 1]); // 直接存储奖励信息
+  totalReward += reward;
+  clickCount++;
+  totalDraws++;
+  showResults();
+
+  // 禁用“一键模拟”和“参与抽奖7天”按钮
+  toggleButtons([simulateAllButton, simulate7DaysButton], [simulateOnceButton, fixedRewardButton]);
+}
+
+function simulateFixedRewardOnce() {
+  if (userChoices.length >= 7) {
+    showModal('maxAttemptsModal'); // 显示完成7次选择的提示模态框
+    return;
+  }
+
+  const reward = 100;
+  rewards.push(`固定奖励 - ${reward}星琼`);
+  userChoices.push(rewards[rewards.length - 1]); // 直接存储奖励信息
+  totalReward += reward;
+  clickCount++; // 增加“本次累计参与抽奖点击”
+  showResults();
+
+  // 禁用“一键模拟”和“参与抽奖7天”按钮
+  toggleButtons([simulateAllButton, simulate7DaysButton], [simulateOnceButton, fixedRewardButton]);
+}
+
+    function simulateUntilLuckyStar() {
+      let count50 = 0;
+      let count600 = 0;
+      let count500000 = 0;
+      let totalCycles = 0;
+
+      while (true) {
+        totalCycles++;
+        for (let day = 1; day <= 7; day++) {
+          const isLuckyStar = Math.random() < luckyStarWinners[day - 1] / totalParticipants;
+          const isFirstPrize = Math.random() < 0.1;
+
+          if (isLuckyStar) {
+            count500000++;
+            break;
+          } else if (isFirstPrize) {
+            count600++;
+          } else {
+            count50++;
+          }
+        }
+
+        if (count500000 > 0) break;
       }
 
-      if (userChoices.length >= 7) {
-        showModal('maxAttemptsModal'); // 显示完成7次选择的提示模态框
-        return;
-      }
+      // 隐藏正常统计信息，显示一键模拟结果
+      document.getElementById("normal-stats").style.display = "none";
+      document.getElementById("simulate-stats").style.display = "block";
+      document.getElementById("total-cycles").textContent = totalCycles;
 
-      const isLuckyStar = !hasWonLuckyStar && Math.random() < luckyStarWinners[userChoices.length] / totalParticipants;
-      const isFirstPrize = Math.random() < 0.1;
-      let reward;
+      // 清空活动结果
+      const resultList = document.getElementById("results");
+      resultList.innerHTML = `
+        <li>抽到50星琼的次数：${count50}</li>
+        <li>抽到600星琼的次数：${count600}</li>
+        <li>抽到50万星琼的次数：${count500000}</li>
+      `;
 
-      if (isLuckyStar) {
-        reward = 500000;
-        hasWonLuckyStar = true;
-        rewards.push(`幸运巨星 - ${reward}星琼`);
-      } else if (isFirstPrize) {
-        reward = 600;
-        rewards.push(`一等奖 - ${reward}星琼`);
-      } else {
-        reward = 50;
-        rewards.push(`二等奖 - ${reward}星琼`);
-      }
-
-      userChoices.push(rewards[rewards.length - 1]); // 直接存储奖励信息
-      totalReward += reward;
-      clickCount++;
-      totalDraws++;
-      showResults();
-
-      // 禁用“参与抽奖7天”按钮并显示遮罩层
-      simulate7DaysButton.disabled = true;
-      disabledOverlay.style.display = 'block';
-    }
-
-    function simulateFixedRewardOnce() {
-      if (userChoices.length >= 7) {
-        showModal('maxAttemptsModal'); // 显示完成7次选择的提示模态框
-        return;
-      }
-
-      const reward = 100;
-      rewards.push(`固定奖励 - ${reward}星琼`);
-      userChoices.push(rewards[rewards.length - 1]); // 直接存储奖励信息
-      totalReward += reward;
-      clickCount++; // 增加“本次累计参与抽奖点击”
-      showResults();
-
-      // 禁用“参与抽奖7天”按钮并显示遮罩层
-      simulate7DaysButton.disabled = true;
-      disabledOverlay.style.display = 'block';
+      // 禁用“参与抽奖7天”、“参与抽奖1天”、“领取固定奖励1天”按钮
+      toggleButtons([simulate7DaysButton, simulateOnceButton, fixedRewardButton], [simulateAllButton]);
     }
 
     function showResults() {
@@ -362,9 +424,12 @@
       clickCount = 0;
       hasWonLuckyStar = false;
 
-      // 启用“参与抽奖7天”按钮并隐藏遮罩层
-      simulate7DaysButton.disabled = false;
-      disabledOverlay.style.display = 'none';
+      // 恢复正常统计信息，隐藏一键模拟结果
+      document.getElementById("normal-stats").style.display = "block";
+      document.getElementById("simulate-stats").style.display = "none";
+
+      // 启用所有按钮
+      toggleButtons([], [simulate7DaysButton, simulateOnceButton, fixedRewardButton, simulateAllButton]);
     }
 
     function resetChoices() {
