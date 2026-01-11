@@ -9,6 +9,8 @@
 // @run-at       document-start
 // @include      *://blog.945426.xyz/lddc.html*
 // @include      *://blog2.945426.xyz/lddc.html*
+// @include      *://moarablog.netlify.app/lddc.html*
+// @include      *://moara-eight.vercel.app/lddc.html*
 // ==/UserScript==
 
 (function() {
