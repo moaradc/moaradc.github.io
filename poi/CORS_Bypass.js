@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         CORS Bypass 跨域解决
-// @namespace    http4://blog.945426.xyz
+// @namespace    https://blog.945426.xyz
 // @version      0.1
 // @description  通过 GM_xmlhttpRequest 绕过浏览器的 CORS 限制，支持代理原生的 fetch 请求。这个脚本主要用于开发和测试环境，帮助解决开发过程中的CORS跨域问题。
 // @author       MOARA
