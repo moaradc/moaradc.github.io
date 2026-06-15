@@ -2,6 +2,7 @@
 const articlesData = [
 {
   "id": "107",
+  "locked": true,
   "title": "Markdown写作指南",
   "date": "2026-06-09 10:00",
   "last_modified": "2026-06-09 10:00",
