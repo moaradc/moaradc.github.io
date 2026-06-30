@@ -13,7 +13,7 @@ const SITE_FEATURES = {
     nav_archives: true, // 归档
     nav_about: false, // 关于
     nav_footer: true, // 页脚
-    nav_api: true, // LDDC API
+    nav_api: false, // LDDC Pages
     section_footer: true, // 整个页脚区域
 
     // archives.html
