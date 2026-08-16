@@ -5,7 +5,7 @@
  */
 
 const SITE_FEATURES = {
-    // index.html
+    // index
     btn_search_index: true, //搜索
     nav_home: true, // 首页
     nav_articles: true, // 文章
@@ -16,17 +16,17 @@ const SITE_FEATURES = {
     nav_footer: true, // 页脚
     section_footer: true, // 整个页脚区域
 
-    // archives.html
+    // archives
     btn_anime: false, // 追番列表/帧间按钮
     btn_search_archives: true, // 搜索
 
-    // index.html, archives.html
+    // index, archives
     btn_theme: true, // 主题切换按钮
 
-    // links.html
+    // links
     links_show_vip: true, // 友链页显示 VIP 友链
     links_show_normal: true, // 友链页显示普通友链
-    links_show_vip_badge: false, // 友链页 VIP 友链显示 VIP 样式
+    links_show_vip_badge: true, // 友链显示 VIP 样式
 };
 
 // === 下面是执行逻辑 ===
@@ -42,7 +42,7 @@ const SITE_FEATURES = {
         nav_footer: 'nav-link-footer',
         section_footer: 'about',
         btn_anime: 'btn-anime-switch',
-        btn_theme: ['theme-btn-pc', 'theme-btn-mobile', 'btn-theme-archive', 'btn-theme-i'], // 支持数组，控制多个按钮
+        btn_theme: ['theme-btn-pc', 'theme-btn-mobile', 'btn-theme-archive', 'btn-theme-i'],
         btn_search_index: ['search-pc', 'search-mobile'],
         btn_search_archives: ['search-container-archive', 'btn-search-mobile-archive'],
         c1: 'c1', c2: 'c2', c3: 'c3',
@@ -61,7 +61,6 @@ const SITE_FEATURES = {
                 const element = document.getElementById(id);
                 if (element) {
                     if (!isEnabled) {
-                        // 使用 important 覆盖任何 flex/block 样式
                         element.style.setProperty('display', 'none', 'important');
                     } else {
                         element.style.display = '';
@@ -71,7 +70,6 @@ const SITE_FEATURES = {
         }
     }
 
-    // 页面加载完成后立即执行
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', applyFeatures);
     } else {
