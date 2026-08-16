@@ -26,7 +26,7 @@ const SITE_FEATURES = {
     // links.html
     links_show_vip: true, // 友链页显示 VIP 友链
     links_show_normal: true, // 友链页显示普通友链
-    links_show_vip_badge: true, // 友链页 VIP 友链显示 VIP 样式（红描边 + 角标）
+    links_show_vip_badge: false, // 友链页 VIP 友链显示 VIP 样式
 };
 
 // === 下面是执行逻辑 ===
