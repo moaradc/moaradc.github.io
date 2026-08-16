@@ -12,16 +12,21 @@ const SITE_FEATURES = {
     nav_tags: true, // 标签
     nav_archives: true, // 归档
     nav_about: false, // 关于
+    nav_friends: true, // 友链
     nav_footer: true, // 页脚
-    nav_api: false, // LDDC Pages
     section_footer: true, // 整个页脚区域
 
     // archives.html
     btn_anime: false, // 追番列表/帧间按钮
     btn_search_archives: true, // 搜索
-    
+
     // index.html, archives.html
     btn_theme: true, // 主题切换按钮
+
+    // links.html
+    links_show_vip: true, // 友链页显示 VIP 友链
+    links_show_normal: true, // 友链页显示普通友链
+    links_show_vip_badge: true, // 友链页 VIP 友链显示 VIP 样式（红描边 + 角标）
 };
 
 // === 下面是执行逻辑 ===
@@ -33,8 +38,8 @@ const SITE_FEATURES = {
         nav_tags: 'tag-nav-container',
         nav_archives: 'nav-link-archives',
         nav_about: 'nav-link-about',
+        nav_friends: 'nav-link-friends',
         nav_footer: 'nav-link-footer',
-        nav_api: 'nav-link-api',
         section_footer: 'about',
         btn_anime: 'btn-anime-switch',
         btn_theme: ['theme-btn-pc', 'theme-btn-mobile', 'btn-theme-archive', 'btn-theme-i'], // 支持数组，控制多个按钮
