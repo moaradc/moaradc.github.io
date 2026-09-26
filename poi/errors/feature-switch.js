@@ -17,7 +17,7 @@ const SITE_FEATURES = {
     section_footer: true, // 整个页脚区域
 
     // archives
-    btn_anime: false, // 追番列表/帧间按钮
+    btn_anime: true, // 追番列表/帧间按钮
     btn_search_archives: true, // 搜索
 
     // index, archives
