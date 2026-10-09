@@ -19,6 +19,7 @@ const SITE_FEATURES = {
     // archives
     btn_anime: true, // 追番列表/帧间按钮
     btn_search_archives: true, // 搜索
+    anime_semantic_tabs: false, // 帧间分页样式：true=全程语义页签，false=全程数字页码；留空/缺省则按页数自动（≤7页语义）
 
     // index, archives
     btn_theme: true, // 主题切换按钮
@@ -31,7 +32,7 @@ const SITE_FEATURES = {
 
 // === 下面是执行逻辑 ===
 (function() {
-    // ID 映射表：将配置项映射到 HTML 元素的 ID
+    // ID 映射表：将配置项映射到 HTML 元素的 ID，用于隐藏
     const ID_MAP = {
         nav_home: 'nav-link-home',
         nav_articles: 'nav-link-articles',
