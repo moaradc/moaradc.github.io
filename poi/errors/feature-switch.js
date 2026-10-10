@@ -17,7 +17,7 @@ const SITE_FEATURES = {
     section_footer: true, // 整个页脚区域
 
     // archives
-    btn_anime: false, // 追番列表/帧间按钮
+    btn_anime: true, // 追番列表/帧间按钮
     btn_search_archives: true, // 搜索
     anime_semantic_tabs: false, // 帧间分页样式：true=全程语义页签，false=全程数字页码；留空/缺省则按页数自动（≤7页语义）
 
